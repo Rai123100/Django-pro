@@ -1,0 +1,48 @@
+{% extends 'mycontacts/background.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container-add">
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xs-offset-3">
+        <form id="edit-contact-form" class="form" 
+              action="{% url 'edit_contact' contact.id %}" 
+              method="POST" role="form">
+            
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" 
+                       id="name" name="name" 
+                       value="{{ contact.name }}" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Relation</label>
+                <input type="text" class="form-control" 
+                       id="relation" name="relation" 
+                       value="{{ contact.relation }}" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Phone</label>
+                <input type="text" class="form-control" 
+                       id="phone" name="phone" 
+                       value="{{ contact.phone }}" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="text" class="form-control" 
+                       id="email" name="email" 
+                       value="{{ contact.email }}" required>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn">Confirm</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock content %}

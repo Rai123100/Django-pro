@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from .forms import AddForm
 from .models import Contact
 from django.http import HttpResponseRedirect
@@ -41,4 +41,15 @@ def add(request):
     else:
         return render(request, 'mycontacts/add.html')
 
+def edit_contact(request, pk):  # <-- adicione o pk como parâmetro
+    contact = get_object_or_404(Contact, pk=pk)
     
+    if request.method == 'POST':
+        form = AddForm(request.POST, instance=contact)
+        if form.is_valid():
+            form.save()
+            return redirect('show')  # Nome da rota de listagem
+    else:
+        form = AddForm(instance=contact)
+    
+    return render(request, 'mycontacts/edit.html', {'form': form, 'contact': contact})

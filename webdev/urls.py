@@ -23,4 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.show),
     path('add/', views.add),
+    path('edit/<int:pk>/', views.edit_contact, name='edit_contact')
+
 ]
