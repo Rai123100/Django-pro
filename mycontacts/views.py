@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .forms import AddForm
 from .models import Contact
 from django.http import HttpResponseRedirect
+from .forms import ContactForm
 
 def show(request):
     """ 
@@ -41,15 +42,37 @@ def add(request):
     else:
         return render(request, 'mycontacts/add.html')
 
-def edit_contact(request, pk):  # <-- adicione o pk como parâmetro
+
+def edit_contact(request, pk):
+    """ Edita um contato existente """
     contact = get_object_or_404(Contact, pk=pk)
+
+    if request.method == "POST":
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            contact.name = form.cleaned_data['name']
+            contact.relation = form.cleaned_data['relation']
+            contact.phone = form.cleaned_data['phone']
+            contact.email = form.cleaned_data['email']
+            contact.save()
+            return redirect('/')
+    else:
+        # Preenche os valores iniciais
+        form = ContactForm(initial={
+            'name': contact.name,
+            'relation': contact.relation,
+            'phone': contact.phone,
+            'email': contact.email,
+        })
+
+    return render(request, 'mycontacts/edit.html', {'form': form, 'contact': contact})
+
+
+def delete_contact(request, contact_id):
+    contact = get_object_or_404(Contact, id=contact_id)
     
     if request.method == 'POST':
-        form = AddForm(request.POST, instance=contact)
-        if form.is_valid():
-            form.save()
-            return redirect('show')  # Nome da rota de listagem
-    else:
-        form = AddForm(instance=contact)
+        contact.delete()
+        return redirect('show')  # nome da URL que lista os contatos
     
-    return render(request, 'mycontacts/edit.html', {'form': form, 'contact': contact})
+    return redirect('show')

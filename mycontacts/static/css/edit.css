@@ -1,0 +1,19 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.body {
+    flex: 1; /* ocupa o espaço disponível */
+}
+
+.footer {
+    position: relative; /* não mais absolute */
+    height: 95px;
+    background-color: #0b3B39;
+    text-align: center;
+    color: white;
+    padding: 20px;
+}
